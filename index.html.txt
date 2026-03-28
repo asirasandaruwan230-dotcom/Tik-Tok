@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PowerTrain | Unleash Your Strength</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050508;
+      --bg-secondary: #0a0a10;
+      --fg: #ffffff;
+      --fg-muted: #7a7a8c;
+      --accent-red: #ff1744;
+      --accent-red-glow: rgba(255, 23, 68, 0.6);
+      --electric-blue: #00e5ff;
+      --electric-blue-glow: rgba(0, 229, 255, 0.5);
+      --card: #0d0d14;
+      --border: #1a1a28;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    .font-display {
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 0.02em;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-red);
+      border-radius: 3px;
+    }
+
+    /* Hero Video Background */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, 
+        rgba(5, 5, 8, 0.7) 0%,
+        rgba(5, 5, 8, 0.5) 50%,
+        rgba(5, 5, 8, 0.95) 100%);
+      z-index: 1;
+    }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse at 20% 50%, var(--accent-red-glow) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 30%, var(--electric-blue-glow) 0%, transparent 40%);
+      opacity: 0.3;
+      animation: gradientPulse 8s ease-in-out infinite;
+    }
+
+    @keyframes gradientPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Energy Lines */
+    .energy-lines {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .energy-line {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--electric-blue), transparent);
+      animation: energyFlow 3s linear infinite;
+      opacity: 0;
+    }
+
+    .energy-line.red {
+      background: linear-gradient(90deg, transparent, var(--accent-red), transparent);
+    }
+
+    @keyframes energyFlow {
+      0% {
+        transform: translateX(-100%) translateY(0);
+        opacity: 0;
+      }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% {
+        transform: translateX(100vw) translateY(20px);
+        opacity: 0;
+      }
+    }
+
+    /* Glowing Buttons */
+    .btn-glow {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, var(--accent-red), #ff4081);
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .btn-glow::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, var(--accent-red), var(--electric-blue), var(--accent-red));
+      border-radius: 6px;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      animation: borderGlow 2s linear infinite;
+    }
+
+    @keyframes borderGlow {
+      0%, 100% { filter: hue-rotate(0deg); }
+      50% { filter: hue-rotate(30deg); }
+    }
+
+    .btn-glow:hover::before {
+      opacity: 1;
+    }
+
+    .btn-glow:hover {
+      transform: translateY(-3px);
+      box-shadow: 
+        0 10px 40px var(--accent-red-glow),
+        0 0 60px var(--accent-red-glow);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.5rem;
+      background: transparent;
+      color: var(--fg);
+      font-weight: 500;
+      border: 2px solid var(--electric-blue);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 0.875rem;
+    }
+
+    .btn-secondary:hover {
+      background: var(--electric-blue);
+      color: var(--bg);
+      box-shadow: 0 0 30px var(--electric-blue-glow);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: var(--accent-red);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px var(--accent-red-glow);
+    }
+
+    /* Video Card */
+    .video-card {
+      position: relative;
+      aspect-ratio: 9/16;
+      background: linear-gradient(135deg, var(--card), var(--bg-secondary));
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid var(--border);
+    }
+
+    .video-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.9) 100%);
+      z-index: 1;
+    }
+
+    .video-card:hover .play-btn {
+      transform: translate(-50%, -50%) scale(1.2);
+      box-shadow: 0 0 50px var(--accent-red-glow);
+    }
+
+    .video-card:hover .video-overlay {
+      opacity: 1;
+    }
+
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--accent-red-glow), var(--electric-blue-glow));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 0;
+    }
+
+    .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70px;
+      height: 70px;
+      background: var(--accent-red);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 30px var(--accent-red-glow);
+    }
+
+    /* Gallery Item */
+    .gallery-item {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .gallery-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.8) 100%);
+      z-index: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .gallery-item:hover .gallery-img {
+      transform: scale(1.1);
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--accent-red-glow), transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 0;
+    }
+
+    .gallery-text {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      z-index: 2;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .gallery-item:hover .gallery-text {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Scroll Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* Navigation */
+    .nav-link {
+      position: relative;
+      color: var(--fg-muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      text-transform: uppercase;
+      font-size: 0.875rem;
+      letter-spacing: 0.1em;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent-red);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--fg);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Stats Counter */
+    .stat-card {
+      text-align: center;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(255,23,68,0.1), transparent);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-red), var(--electric-blue));
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-red), var(--electric-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Glowing Title */
+    .glow-title {
+      text-shadow: 
+        0 0 20px var(--accent-red-glow),
+        0 0 40px var(--accent-red-glow),
+        0 0 60px var(--accent-red-glow);
+    }
+
+    /* Pulse Ring */
+    .pulse-ring {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 var(--accent-red-glow);
+      }
+      50% {
+        box-shadow: 0 0 0 15px transparent;
+      }
+    }
+
+    /* Social Icons */
+    .social-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      color: var(--fg-muted);
+      transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+      background: var(--accent-red);
+      border-color: var(--accent-red);
+      color: white;
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px var(--accent-red-glow);
+    }
+
+    .social-icon.blue:hover {
+      background: var(--electric-blue);
+      border-color: var(--electric-blue);
+      box-shadow: 0 10px 30px var(--electric-blue-glow);
+    }
+
+    /* Canvas */
+    #particles-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* Grid Pattern */
+    .grid-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255,23,68,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,23,68,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: 0;
+    }
+
+    /* Section Divider */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      max-width: 300px;
+      height: 100vh;
+      background: var(--bg-secondary);
+      border-left: 1px solid var(--border);
+      z-index: 100;
+      transition: right 0.3s ease;
+      padding: 6rem 2rem;
+    }
+
+    .mobile-menu.active {
+      right: 0;
+    }
+
+    .mobile-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 99;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .mobile-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#" class="font-display text-xl font-bold tracking-wider">
+        POWER<span class="text-[var(--accent-red)]">TRAIN</span>
+      </a>
+      
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#videos" class="nav-link">Videos</a>
+        <a href="#gallery" class="nav-link">Gallery</a>
+        <a href="#social" class="nav-link">Connect</a>
+      </div>
+      
+      <a href="https://www.tiktok.com/@powertrain.1" target="_blank" class="btn-glow text-sm py-2 px-4 hidden sm:flex">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+        </svg>
+        Follow
+      </a>
+
+      <!-- Mobile Menu Button -->
+      <button class="md:hidden p-2" id="mobile-toggle" aria-label="Toggle menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-overlay" id="mobile-overlay"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="flex flex-col gap-6">
+      <a href="#about" class="nav-link text-lg">About</a>
+      <a href="#videos" class="nav-link text-lg">Videos</a>
+      <a href="#gallery" class="nav-link text-lg">Gallery</a>
+      <a href="#social" class="nav-link text-lg">Connect</a>
+      <a href="https://www.tiktok.com/@powertrain.1" target="_blank" class="btn-glow justify-center mt-4">
+        Follow on TikTok
+      </a>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <div class="hero-bg">
+      <div class="hero-gradient"></div>
+      <canvas id="particles-canvas"></canvas>
+    </div>
+    
+    <div class="energy-lines" id="energy-lines"></div>
+    <div class="grid-pattern"></div>
+
+    <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
+      <div class="reveal">
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-[var(--card)] border border-[var(--border)] rounded-full mb-6">
+          <span class="w-2 h-2 bg-[var(--accent-red)] rounded-full animate-pulse"></span>
+          <span class="text-sm text-[var(--fg-muted)]">Fitness Content Creator</span>
+        </div>
+      </div>
+      
+      <h1 class="font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-none glow-title reveal reveal-delay-1">
+        POWERTRAIN
+      </h1>
+      
+      <p class="text-2xl md:text-3xl lg:text-4xl font-display text-[var(--electric-blue)] mt-4 reveal reveal-delay-2">
+        UNLEASH YOUR STRENGTH
+      </p>
+      
+      <p class="text-[var(--fg-muted)] text-lg max-w-xl mx-auto mt-6 reveal reveal-delay-3">
+        High-intensity workouts, motivation, and transformation content to fuel your fitness journey
+      </p>
+      
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 reveal reveal-delay-4">
+        <a href="https://www.tiktok.com/@powertrain.1" target="_blank" class="btn-glow pulse-ring">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+          </svg>
+          Follow Me
+        </a>
+        <a href="#videos" class="btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Watch Videos
+        </a>
+      </div>
+
+      <!-- Stats -->
+      <div class="mt-16 grid grid-cols-3 gap-4 max-w-lg mx-auto reveal reveal-delay-4">
+        <div class="stat-card">
+          <div class="stat-number" data-target="750">0</div>
+          <div class="text-[var(--fg-muted)] text-sm">K+ Followers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-target="25">0</div>
+          <div class="text-[var(--fg-muted)] text-sm">M+ Views</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-target="500">0</div>
+          <div class="text-[var(--fg-muted)] text-sm">+ Workouts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+      <div class="w-6 h-10 border-2 border-[var(--fg-muted)] rounded-full flex justify-center pt-2">
+        <div class="w-1 h-3 bg-[var(--accent-red)] rounded-full animate-bounce"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="relative py-24 md:py-32 overflow-hidden">
+    <div class="grid-pattern opacity-50"></div>
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="reveal">
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-[var(--accent-red)] bg-opacity-10 border border-[var(--accent-red)] border-opacity-30 rounded-full mb-6">
+            <span class="text-[var(--accent-red)] text-sm font-medium">About</span>
+          </div>
+          <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            FORGE YOUR <span class="text-[var(--electric-blue)]">LEGACY</span>
+          </h2>
+          <p class="text-[var(--fg-muted)] text-lg leading-relaxed mb-6">
+            PowerTrain is your ultimate source for high-energy fitness content. Every video is designed to push your limits, break barriers, and unlock the strength you never knew you had.
+          </p>
+          <p class="text-[var(--fg-muted)] text-lg leading-relaxed mb-8">
+            From intense workout routines to motivational content that fires up your mindset, this is where transformation begins. Join a community that doesn't settle for average.
+          </p>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-[var(--accent-red)] bg-opacity-20 rounded-lg flex items-center justify-center">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-red)" stroke-width="2">
+                  <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
+                  <line x1="16" y1="8" x2="2" y2="22"/>
+                  <line x1="17.5" y1="15" x2="9" y2="15"/>
+                </svg>
+              </div>
+              <span class="font-medium">Workouts</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-[var(--electric-blue)] bg-opacity-20 rounded-lg flex items-center justify-center">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--electric-blue)" stroke-width="2">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+              </div>
+              <span class="font-medium">Motivation</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-[#00ff88] bg-opacity-20 rounded-lg flex items-center justify-center">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2">
+                  <path d="M12 20V10"/>
+                  <path d="M18 20V4"/>
+                  <path d="M6 20v-4"/>
+                </svg>
+              </div>
+              <span class="font-medium">Progress</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-[#ff00aa] bg-opacity-20 rounded-lg flex items-center justify-center">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff00aa" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </div>
+              <span class="font-medium">Community</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative reveal reveal-delay-2">
+          <div class="relative">
+            <!-- Main Image Area -->
+            <div class="aspect-[4/5] bg-gradient-to-br from-[var(--card)] to-[var(--bg-secondary)] rounded-2xl overflow-hidden border border-[var(--border)]">
+              <div class="absolute inset-0 bg-gradient-to-br from-[var(--accent-red)] to-[var(--electric-blue)] opacity-20"></div>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="text-center">
+                  <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="var(--accent-red)" stroke-width="1" class="mx-auto mb-4">
+                    <path d="M6.5 6.5h11v11h-11z"/>
+                    <path d="M6.5 6.5L3 3"/>
+                    <path d="M17.5 6.5L21 3"/>
+                    <path d="M17.5 17.5L21 21"/>
+                    <path d="M6.5 17.5L3 21"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                  <p class="font-display text-2xl text-[var(--fg-muted)]">POWER</p>
+                  <p class="font-display text-3xl text-[var(--accent-red)]">TRAIN</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Floating Stats Card -->
+            <div class="absolute -bottom-6 -right-6 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-2xl">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-[var(--accent-red)] to-[var(--electric-blue)] rounded-lg flex items-center justify-center">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-2xl font-bold">4.9</p>
+                  <p class="text-[var(--fg-muted)] text-sm">Rating</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Decorative Elements -->
+            <div class="absolute -top-4 -left-4 w-20 h-20 border border-[var(--electric-blue)] rounded-lg opacity-30"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider max-w-7xl mx-auto"></div>
+
+  <!-- Videos Section -->
+  <section id="videos" class="relative py-24 md:py-32">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-[var(--electric-blue)] bg-opacity-10 border border-[var(--electric-blue)] border-opacity-30 rounded-full mb-6">
+          <span class="text-[var(--electric-blue)] text-sm font-medium">Videos</span>
+        </div>
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold">
+          FEATURED <span class="text-[var(--accent-red)]">CONTENT</span>
+        </h2>
+        <p class="text-[var(--fg-muted)] mt-4 max-w-2xl mx-auto">
+          High-energy workouts and motivational content to fuel your transformation
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        <!-- Video Cards -->
+        <div class="video-card reveal reveal-delay-1" onclick="window.open('https://www.tiktok.com/@powertrain.1', '_blank')">
+          <div class="video-overlay"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-[#1a0808] to-[#080812]"></div>
+          <div class="play-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
+          <div class="absolute bottom-4 left-4 z-10">
+            <p class="text-white font-semibold text-sm">Full Body Burn</p>
+            <p class="text-[var(--fg-muted)] text-xs mt-1">2.1M views</p>
+          </div>
+        </div>
+
+        <div class="video-card reveal reveal-delay-2" onclick="window.open('https://www.tiktok.com/@powertrain.1', '_blank')">
+          <div class="video-overlay"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-[#08121a] to-[#120810]"></div>
+          <div class="play-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
+          <div class="absolute bottom-4 left-4 z-10">
+            <p class="text-white font-semibold text-sm">Core Crusher</p>
+            <p class="text-[var(--fg-muted)] text-xs mt-1">1.8M views</p>
+          </div>
+        </div>
+
+        <div class="video-card reveal reveal-delay-3" onclick="window.open('https://www.tiktok.com/@powertrain.1', '_blank')">
+          <div class="video-overlay"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-[#121008] to-[#081218]"></div>
+          <div class="play-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
+          <div class="absolute bottom-4 left-4 z-10">
+            <p class="text-white font-semibold text-sm">Morning Motivation</p>
+            <p class="text-[var(--fg-muted)] text-xs mt-1">3.4M views</p>
+          </div>
+        </div>
+
+        <div class="video-card reveal reveal-delay-4" onclick="window.open('https://www.tiktok.com/@powertrain.1', '_blank')">
+          <div class="video-overlay"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-[#100818] to-[#0a100a]"></div>
+          <div class="play-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
+          <div class="absolute bottom-4 left-4 z-10">
+            <p class="text-white font-semibold text-sm">Arm Shredder</p>
+            <p class="text-[var(--fg-muted)] text-xs mt-1">1.5M views</p>
+          </div>
+        </div>
+
+        <div class="video-card reveal reveal-delay-1" onclick="window.open('https://www.tiktok.com/@powertrain.1', '_blank')">
+          <div class="video-overlay"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-[#081018] to-[#180810]"></div>
+          <div class="play-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
+          <div class="absolute bottom-4 left-4 z-10">
+            <p class="text-white font-semibold text-sm">Leg Day Intense</p>
+            <p class="text-[var(--fg-muted)] text-xs mt-1">2.7M views</p>
+          </div>
+        </div>
+
+        <div class="video-card reveal reveal-delay-2" onclick="window.open('https://www.tiktok.com/@powertrain.1', '_blank')">
+          <div class="video-overlay"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-[#180a08] to-[#081812]"></div>
+          <div class="play-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
+          <div class="absolute bottom-4 left-4 z-10">
+            <p class="text-white font-semibold text-sm">HIIT Challenge</p>
+            <p class="text-[var(--fg-muted)] text-xs mt-1">4.2M views</p>
+          </div>
+        </div>
+
+        <div class="video-card reveal reveal-delay-3" onclick="window.open('https://www.tiktok.com/@powertrain.1', '_blank')">
+          <div class="video-overlay"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-[#101818] to-[#181008]"></div>
+          <div class="play-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
+          <div class="absolute bottom-4 left-4 z-10">
+            <p class="text-white font-semibold text-sm">No Equipment</p>
+            <p class="text-[var(--fg-muted)] text-xs mt-1">1.9M views</p>
+          </div>
+        </div>
+
+        <div class="video-card reveal reveal-delay-4" onclick="window.open('https://www.tiktok.com/@powertrain.1', '_blank')">
+          <div class="video-overlay"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-[#181008] to-[#081818]"></div>
+          <div class="play-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
+          <div class="absolute bottom-4 left-4 z-10">
+            <p class="text-white font-semibold text-sm">Mindset Shift</p>
+            <p class="text-[var(--fg-muted)] text-xs mt-1">5.1M views</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-12 reveal">
+        <a href="https://www.tiktok.com/@powertrain.1" target="_blank" class="btn-secondary">
+          View All Videos
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider max-w-7xl mx-auto"></div>
+
+  <!-- Gallery Section -->
+  <section id="gallery" class="relative py-24 md:py-32 overflow-hidden">
+    <div class="grid-pattern opacity-30"></div>
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-[var(--accent-red)] bg-opacity-10 border border-[var(--accent-red)] border-opacity-30 rounded-full mb-6">
+          <span class="text-[var(--accent-red)] text-sm font-medium">Gallery</span>
+        </div>
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold">
+          ACTION <span class="text-[var(--electric-blue)]">SHOTS</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- Gallery Items -->
+        <div class="gallery-item reveal reveal-delay-1">
+          <div class="gallery-overlay"></div>
+          <div class="gallery-img bg-gradient-to-br from-[#1a0a0a] to-[#0a0a1a]"></div>
+          <div class="gallery-text">
+            <p class="font-semibold text-sm">Chest Day</p>
+            <p class="text-[var(--fg-muted)] text-xs">Heavy Lifting</p>
+          </div>
+        </div>
+
+        <div class="gallery-item reveal reveal-delay-2">
+          <div class="gallery-overlay"></div>
+          <div class="gallery-img bg-gradient-to-br from-[#0a1a1a] to-[#1a0a0a]"></div>
+          <div class="gallery-text">
+            <p class="font-semibold text-sm">Cardio Session</p>
+            <p class="text-[var(--fg-muted)] text-xs">High Intensity</p>
+          </div>
+        </div>
+
+        <div class="gallery-item reveal reveal-delay-3">
+          <div class="gallery-overlay"></div>
+          <div class="gallery-img bg-gradient-to-br from-[#1a1a0a] to-[#0a0a1a]"></div>
+          <div class="gallery-text">
+            <p class="font-semibold text-sm">Back Workout</p>
+            <p class="text-[var(--fg-muted)] text-xs">Pull Day</p>
+          </div>
+        </div>
+
+        <div class="gallery-item reveal reveal-delay-4">
+          <div class="gallery-overlay"></div>
+          <div class="gallery-img bg-gradient-to-br from-[#0a0a1a] to-[#1a0a1a]"></div>
+          <div class="gallery-text">
+            <p class="font-semibold text-sm">Shoulders</p>
+            <p class="text-[var(--fg-muted)] text-xs">Overhead Press</p>
+          </div>
+        </div>
+
+        <div class="gallery-item reveal reveal-delay-1">
+          <div class="gallery-overlay"></div>
+          <div class="gallery-img bg-gradient-to-br from-[#1a0a1a] to-[#0a1a0a]"></div>
+          <div class="gallery-text">
+            <p class="font-semibold text-sm">Leg Press</p>
+            <p class="text-[var(--fg-muted)] text-xs">Max Weight</p>
+          </div>
+        </div>
+
+        <div class="gallery-item reveal reveal-delay-2">
+          <div class="gallery-overlay"></div>
+          <div class="gallery-img bg-gradient-to-br from-[#0a1a0a] to-[#1a0a1a]"></div>
+          <div class="gallery-text">
+            <p class="font-semibold text-sm">Arm Day</p>
+            <p class="text-[var(--fg-muted)] text-xs">Bicep Curls</p>
+          </div>
+        </div>
+
+        <div class="gallery-item reveal reveal-delay-3">
+          <div class="gallery-overlay"></div>
+          <div class="gallery-img bg-gradient-to-br from-[#1a0a0a] to-[#0a1a1a]"></div>
+          <div class="gallery-text">
+            <p class="font-semibold text-sm">Deadlift</p>
+            <p class="text-[var(--fg-muted)] text-xs">PR Attempt</p>
+          </div>
+        </div>
+
+        <div class="gallery-item reveal reveal-delay-4">
+          <div class="gallery-overlay"></div>
+          <div class="gallery-img bg-gradient-to-br from-[#0a1a1a] to-[#1a1a0a]"></div>
+          <div class="gallery-text">
+            <p class="font-semibold text-sm">Recovery</p>
+            <p class="text-[var(--fg-muted)] text-xs">Stretching</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Section -->
+  <section id="social" class="relative py-24 md:py-32 bg-[var(--bg-secondary)]">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <div class="reveal">
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-[var(--electric-blue)] bg-opacity-10 border border-[var(--electric-blue)] border-opacity-30 rounded-full mb-6">
+          <span class="text-[var(--electric-blue)] text-sm font-medium">Connect</span>
+        </div>
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+          JOIN THE <span class="text-[var(--accent-red)]">MOVEMENT</span>
+        </h2>
+        <p class="text-[var(--fg-muted)] text-lg max-w-xl mx-auto mb-12">
+          Follow for daily workouts, motivation, and exclusive content
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
+        <!-- TikTok -->
+        <a href="https://www.tiktok.com/@powertrain.1" target="_blank" class="card p-6 text-center group reveal reveal-delay-1">
+          <div class="w-16 h-16 bg-[var(--accent-red)] bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-[var(--accent-red)] transition-all duration-300">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--accent-red)" class="group-hover:fill-white transition-colors">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+            </svg>
+          </div>
+          <h3 class="font-display text-lg mb-1">TikTok</h3>
+          <p class="text-[var(--fg-muted)] text-sm mb-2">@powertrain.1</p>
+          <p class="text-[var(--accent-red)] font-semibold">750K+ Followers</p>
+        </a>
+
+        <!-- YouTube -->
+        <a href="#" class="card p-6 text-center group reveal reveal-delay-2">
+          <div class="w-16 h-16 bg-[#ff0000] bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-[#ff0000] transition-all duration-300">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="#ff0000" class="group-hover:fill-white transition-colors">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+          </div>
+          <h3 class="font-display text-lg mb-1">YouTube</h3>
+          <p class="text-[var(--fg-muted)] text-sm mb-2">Coming Soon</p>
+          <p class="text-[#ff0000] font-semibold">Subscribe</p>
+        </a>
+
+        <!-- Instagram -->
+        <a href="#" class="card p-6 text-center group reveal reveal-delay-3">
+          <div class="w-16 h-16 bg-gradient-to-br from-[#833ab4] via-[#fd1d1d] to-[#fcb045] bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:opacity-100 transition-all duration-300 p-px">
+            <div class="w-full h-full rounded-full flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-[#833ab4] group-hover:via-[#fd1d1d] group-hover:to-[#fcb045]">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="#fd1d1d" class="group-hover:fill-white transition-colors">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+              </svg>
+            </div>
+          </div>
+          <h3 class="font-display text-lg mb-1">Instagram</h3>
+          <p class="text-[var(--fg-muted)] text-sm mb-2">Coming Soon</p>
+          <p class="text-[#fd1d1d] font-semibold">Follow</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="relative py-10 border-t border-[var(--border)]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+          <span class="font-display text-xl font-bold tracking-wider">POWER<span class="text-[var(--accent-red)]">TRAIN</span></span>
+        </div>
+        
+        <div class="flex items-center gap-4">
+          <a href="https://www.tiktok.com/@powertrain.1" target="_blank" class="social-icon" aria-label="TikTok">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+            </svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="YouTube">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+          </a>
+          <a href="#" class="social-icon blue" aria-label="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+          </a>
+        </div>
+        
+        <p class="text-[var(--fg-muted)] text-sm">
+          2024 PowerTrain. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize variables first
+    const navbar = document.getElementById('navbar');
+    const energyLinesContainer = document.getElementById('energy-lines');
+    const particlesCanvas = document.getElementById('particles-canvas');
+    const ctx = particlesCanvas.getContext('2d');
+    const mobileToggle = document.getElementById('mobile-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+
+    let particles = [];
+    let prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Canvas Setup
+    function resizeCanvas() {
+      particlesCanvas.width = window.innerWidth;
+      particlesCanvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Particle Class
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * particlesCanvas.width;
+        this.y = Math.random() * particlesCanvas.height;
+        this.size = Math.max(0.5, Math.random() * 2.5);
+        this.speedX = (Math.random() - 0.5) * 1.5;
+        this.speedY = (Math.random() - 0.5) * 1.5;
+        this.opacity = Math.random() * 0.6 + 0.2;
+        this.color = Math.random() > 0.6 ? '#ff1744' : '#00e5ff';
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.x < 0 || this.x > particlesCanvas.width || this.y < 0 || this.y > particlesCanvas.height) {
+          this.reset();
+        }
+      }
+
+      draw() {
+        const safeSize = Math.max(0.1, this.size);
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, safeSize, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = Math.max(0, Math.min(1, this.opacity));
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    // Initialize Particles
+    function initParticles() {
+      particles = [];
+      const count = prefersReducedMotion ? 30 : 100;
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    // Animation Loop
+    function animate() {
+      ctx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
+      
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      // Connect particles
+      particles.forEach((p1, i) => {
+        particles.slice(i + 1).forEach(p2 => {
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 80) {
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = '#ff1744';
+            ctx.globalAlpha = Math.max(0, (1 - dist / 80) * 0.15);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+          }
+        });
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    if (!prefersReducedMotion) {
+      initParticles();
+      animate();
+    }
+
+    // Energy Lines
+    function createEnergyLines() {
+      if (prefersReducedMotion) return;
+      
+      for (let i = 0; i < 12; i++) {
+        const line = document.createElement('div');
+        line.className = 'energy-line' + (Math.random() > 0.5 ? ' red' : '');
+        line.style.top = `${Math.random() * 100}%`;
+        line.style.width = `${Math.random() * 150 + 80}px`;
+        line.style.animationDelay = `${Math.random() * 3}s`;
+        line.style.animationDuration = `${Math.random() * 2 + 2}s`;
+        energyLinesContainer.appendChild(line);
+      }
+    }
+    createEnergyLines();
+
+    // Scroll Reveal
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // Navbar Background
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(5, 5, 8, 0.95)';
+        navbar.style.backdropFilter = 'blur(10px)';
+        navbar.style.borderBottom = '1px solid var(--border)';
+      } else {
+        navbar.style.background = 'transparent';
+        navbar.style.backdropFilter = 'none';
+        navbar.style.borderBottom = 'none';
+      }
+    });
+
+    // Counter Animation
+    function animateCounters() {
+      const counters = document.querySelectorAll('.stat-number');
+      
+      counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const duration = 2000;
+        const startTime = performance.now();
+
+        function update(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          const current = Math.floor(target * easeOut);
+          
+          counter.textContent = current;
+          
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          }
+        }
+
+        requestAnimationFrame(update);
+      });
+    }
+
+    const heroSection = document.getElementById('hero');
+    const counterObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        animateCounters();
+        counterObserver.disconnect();
+      }
+    }, { threshold: 0.5 });
+
+    counterObserver.observe(heroSection);
+
+    // Mobile Menu
+    function toggleMobileMenu() {
+      mobileMenu.classList.toggle('active');
+      mobileOverlay.classList.toggle('active');
+      document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    }
+
+    mobileToggle.addEventListener('click', toggleMobileMenu);
+    mobileOverlay.addEventListener('click', toggleMobileMenu);
+
+    // Close mobile menu on link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (mobileMenu.classList.contains('active')) {
+          toggleMobileMenu();
+        }
+      });
+    });
+
+    // Smooth Scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Resize handler
+    window.addEventListener('resize', () => {
+      if (!prefersReducedMotion) {
+        initParticles();
+      }
+    });
+  </script>
+</body>
+</html>
